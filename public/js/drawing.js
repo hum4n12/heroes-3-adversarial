@@ -130,7 +130,7 @@ canvas.addEventListener('mouseout', e => {
 });
 
 const sendImage = async () => {
-    const response = await fetch('http://localhost:3000/generate', {
+    const response = await fetch('http://heroes-3-adversarial.eu-4.evennode.com/generate', {
         method: 'POST',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({file: canvas.toDataURL('image/jpeg')})
