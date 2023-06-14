@@ -8,6 +8,7 @@ const loadModel = async () => {
 }
 
 const generate = async (image, requestedModel) => {
+    throw new Error(requestedModel);
     const input = preprocess(image);
     const tensor = await requestedModel.predict(input);
     const postImage = postprocess(tensor);
