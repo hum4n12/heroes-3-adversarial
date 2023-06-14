@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const model = require('./model');
+const modelManager = require('./modelManager');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/public'));
 
@@ -15,19 +15,27 @@ app.get('/', (req, res) => {
   res.send('index.html');
 })
 
-app.post('/generate', async (req, res) => {
+app.post('/generate/aboveground', async (req, res) => {
+  return await prepareRequest(req, res, modelManager.generateAboveground);
+});
+
+app.post('/generate/underground', async (req, res) => {
+  return await prepareRequest(req, res, modelManager.generateUnderground);
+});
+
+const prepareRequest = async (req, res, generateFunction) => {
   if (!req.body || !req.body.file) {
     return res.status(400).send();
   }
   const image = req.body.file.replace(/^data:image\/jpeg;base64,/, "");
   const buffer = Buffer.from(image, 'base64');
-  const generatedImage = await model.generate(buffer);
+  const generatedImage = await generateFunction(buffer);
   const generatedImagePath = path.resolve('./public/img/generated_maps/generated.jpeg');
   fs.writeFileSync(generatedImagePath, generatedImage);
   return res.sendFile(generatedImagePath);
-});
+}
 
-app.listen(process.env.PORT || port, () => {
-  model.loadModel().then(_ => console.log(`Model loaded`));
+app.listen(port, () => {
+  modelManager.loadModel().then(_ => console.log(`Model loaded`));
   console.log(`Example app listening on port ${port}`);
 });

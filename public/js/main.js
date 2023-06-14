@@ -1,8 +1,4 @@
-import { initDrawing, updateColor, drawGrid, updateBrushSize, colors } from './drawing.js';
-
-window.onload = () => {
-    initDrawing(colors.grass);
-}
+import { initDrawing, updateColor, drawGrid, updateBrushSize, colors, changeMode, getFillColor } from './drawing.js';
 
 const selected = 'selected';
 
@@ -19,21 +15,22 @@ const selectBrush = selectedBrush => {
 const colorPickers = document.querySelectorAll(".pick-color");
 colorPickers.forEach(picker => {
     picker.addEventListener('click', () => {
-        updateColor(getComputedStyle(picker).backgroundColor);
+        const color = Array.from(picker.classList).filter(className => className !== 'pick-color')[0];
+        updateColor(color);
         selectColor(picker);
     })
 })
 
 const clear = document.querySelector('#clear');
 clear.addEventListener('click', () => {
-    drawGrid(colors.sea);
+    drawGrid(getFillColor());
 })
 
-const brushSmall = document.querySelector('#brushSmall');
-brushSmall.addEventListener('click', () => {
-    updateBrushSize(2);
-    selectBrush(brushSmall);
-})
+const changeModeElement = document.querySelector('#changeMode');
+changeModeElement.addEventListener('click', () => {
+    const mode = changeMode();
+    document.querySelector('main').style.backgroundImage = `url('img/${mode}.jpg')`;
+});
 
 const brushMedium = document.querySelector('#brushMedium');
 brushMedium.addEventListener('click', () => {
@@ -46,3 +43,9 @@ brushLarge.addEventListener('click', () => {
     updateBrushSize(32);
     selectBrush(brushLarge);
 })
+
+window.onload = () => {
+    initDrawing("grass");
+    selectBrush(brushLarge);
+    selectColor(document.querySelector('.grass'));
+}
