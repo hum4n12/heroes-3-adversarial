@@ -5,7 +5,7 @@ let undergroundModel = null;
 const loadModel = async () => {
     abovegroundModel = await tf.loadLayersModel('file://./models/aboveground_model/model.json');
     undergroundModel = await tf.loadLayersModel('file://./models/underground_model/model.json');
-    throw new Error('xddd')
+    throw new Error(abovegroundModel);
 }
 
 const generate = async (image, requestedModel) => {
