@@ -17,7 +17,6 @@ const generate = async (image, requestedModel) => {
 }
 
 const generateAboveground = async image => {
-    throw new Error(abovegroundModel);
     return generate(image, abovegroundModel);
 }
 
