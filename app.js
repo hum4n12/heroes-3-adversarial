@@ -55,6 +55,10 @@ const prepareRequest = async (req, res, generateFunction) => {
 }
 
 app.listen(port, () => {
-  modelManager.loadModel().then(_ => console.log(`Model loaded`));
+  try {
+    modelManager.loadModel().then(loadedModel =>  logger.log('model loaded', loadedModel));
+  } catch(error) {
+    logger.log('error', error.message);
+  }
   console.log(`Example app listening on port ${port}`);
 });
