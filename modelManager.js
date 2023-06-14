@@ -5,6 +5,9 @@ let undergroundModel = null;
 const loadModel = async () => {
     abovegroundModel = await tf.loadLayersModel('file://./models/aboveground_model/model.json');
     undergroundModel = await tf.loadLayersModel('file://./models/underground_model/model.json');
+}
+
+const generate = async (image, requestedModel) => {
     const methods = [];
     for (const prop in abovegroundModel) {
         if (typeof abovegroundModel[prop] === 'function') {
@@ -12,9 +15,6 @@ const loadModel = async () => {
         }
       }
     throw new Error(methods);
-}
-
-const generate = async (image, requestedModel) => {
     const input = preprocess(image);
     const tensor = await requestedModel.predict(input);
     const postImage = postprocess(tensor);
