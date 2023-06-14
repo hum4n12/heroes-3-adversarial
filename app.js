@@ -24,6 +24,8 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+modelManager.loadModel().then(loadedModel =>  logger.log('model loaded', loadedModel))
+.catch(error => logger.log('error', error.message))
 
 app.get('/', (req, res) => {
   res.send('index.html');
@@ -55,10 +57,5 @@ const prepareRequest = async (req, res, generateFunction) => {
 }
 
 app.listen(port, () => {
-  try {
-    modelManager.loadModel().then(loadedModel =>  logger.log('model loaded', loadedModel));
-  } catch(error) {
-    logger.log('error', error.message);
-  }
   console.log(`Example app listening on port ${port}`);
 });
