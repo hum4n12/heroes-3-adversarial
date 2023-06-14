@@ -8,13 +8,6 @@ const loadModel = async () => {
 }
 
 const generate = async (image, requestedModel) => {
-    const methods = [];
-    for (const prop in abovegroundModel) {
-        if (typeof abovegroundModel[prop] === 'function') {
-          methods.push(prop);
-        }
-      }
-    throw new Error(methods);
     const input = preprocess(image);
     const tensor = await requestedModel.predict(input);
     const postImage = postprocess(tensor);
